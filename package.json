@@ -1,6 +1,6 @@
 {
   "name": "dsh-work-chat",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "private": true,
   "type": "module",
   "description": "DSH 侧边栏「工作区 / 对话区」分区与折叠、新会话页 Work–Chat 开关，以及 DeepSeek 网页端对话同步",

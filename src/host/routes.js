@@ -189,7 +189,7 @@ export function mountRoutes (webServer, ctx = null) {
       path: '/workchat/health',
       handler: (request, response) => {
         if (!requireMethod(request, response, 'GET')) return
-        sendJson(response, 200, { ok: true, version: '0.0.1' })
+        sendJson(response, 200, { ok: true, version: '0.1.0' })
       },
     },
 
@@ -235,7 +235,7 @@ export function mountRoutes (webServer, ctx = null) {
         const status = publicStatus()
         sendJson(response, 200, {
           ok: true,
-          version: '0.0.1',
+          version: '0.1.0',
           configured: status.configured,
           tokenPresent: status.tokenPresent,
           loginKind: status.loginKind,

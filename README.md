@@ -42,14 +42,44 @@ tools/                   自检脚本：smoke-* / probe-*
 secrets/                 本机凭据（已 gitignore）
 ```
 
-## 安装（确认方案后）
+## 安装
+
+### 方式一：从 Release 安装（推荐）
+
+1. 到 [Releases](https://github.com/kafudolly/dsh-work-chat/releases) 下载 `dsh-work-chat-0.1.0.zip`（Windows 推荐）或 `dsh-work-chat-0.1.0.tar.gz`；
+2. 解压到一个固定目录，例如 `%USERPROFILE%\plugins\dsh-work-chat`（解压后该目录里应能直接看到 `package.json`、`cordis.patch.yml`、`index.js`、`client.js`）；
+3. 打开 DSH → **插件管理器** → 安装本地插件（install bundle），目标选择**解压后的目录**；
+4. 安装成功后刷新 DSH 的桌面窗口（不是浏览器里的 `127.0.0.1` 地址）。
+
+> `desktop` profile 由 Electron 独占管理，`dsh --profile desktop ...` 命令行会拒绝修改；请使用应用内插件管理器。
+
+### 方式二：从源码安装（可跟随更新）
 
 ```powershell
-# 由插件管理器安装当前目录（会写入 profile 的 package.json 与 cordis.patch.yml）
-# 目标：link:<插件目录>
+git clone https://github.com/kafudolly/dsh-work-chat.git
 ```
 
-安装后刷新 `http://127.0.0.1:8795`；卸载用插件管理器的 remove。
+然后把仓库目录按上面的第 3 步安装。
+
+### 安装后配置（必做）
+
+1. DSH → 设置 → **DeepSeek 网页账号**；
+2. 粘贴网页端 `userToken`：
+   浏览器打开 <https://chat.deepseek.com> → F12 → Application → Local Storage → `userToken`，
+   或 Network 里任一请求的 `authorization: Bearer <token>`；
+3. 点「保存」→「测试连接」，提示“连接成功（userToken 方式，最近 N 条）”；
+4. 侧栏会出现「工作区 / 对话区」两个分区；点对话区标题栏的 ⟳ 拉取对话列表。
+
+> 账号密码登录会被 DeepSeek 的人机验证（AWS WAF）拦截，所以只支持 `userToken`。
+
+### 卸载
+
+在插件管理器里移除插件，或删除安装目录。运行期数据在 `$DSH_HOME/workchat/`（凭据、缓存、PoW wasm），不需要时可整体删除。
+
+### 环境要求
+
+- DSH `0.2.2-rc.1`（Web / Desktop 均可，插件按 web 客户端加载）；
+- 首次渲染对话时会从插件自身加载 marked + KaTeX（约 0.55MB，本地文件，离线可用）。
 
 ## 安全边界
 
@@ -60,7 +90,7 @@ secrets/                 本机凭据（已 gitignore）
 - 所有变更类路由要求同源（回环 + Origin 校验）。
 - `secrets/*.json` 已被 `.gitignore` 排除；AI 助手不读取该文件。
 
-## 验证记录（截至 0.0.1）
+## 验证记录（截至 0.1.0）
 
 | 项 | 结果 |
 |---|---|
