@@ -1,31 +1,45 @@
 # dsh-work-chat
 
-DSH 侧边栏「工作区 / 对话区」双分区 + 新会话页 Work–Chat 开关 + DeepSeek 网页端对话同步。
+把 DeepSeek 网页端对话接进 DSH 侧边栏：可折叠的「工作区 / 对话区」、Work–Chat 新会话开关、深度思考与联网搜索、Markdown/LaTeX 渲染。
 
-> 状态：**已安装到 desktop profile（0.0.1），宿主路由已验证通过；客户端待浏览器目视验收**。
-> 完整设计与验收标准见 [`docs/需求与实现方案.md`](docs/需求与实现方案.md)，
-> 分模块文档见 [`docs/00-overview.md`](docs/00-overview.md)。
+## 关于
+
+`dsh-work-chat` 是一个 DSH（DeepSeek Harness）Web 客户端插件，把「网页端对话」变成侧边栏里的一等公民：
+
+- **双分区侧栏**：工作区与对话区各占一个可折叠分区，悬停加深、点击整体收起、状态记忆；
+- **对话区同步**：读取 `chat.deepseek.com` 当前账号的对话，按「置顶 / 今天 / 昨天 / 近 7 天 / 更早」分组，支持手动刷新、重命名、置顶、分享、多选删除；
+- **Work / Chat 开关**：新会话页顶部分段开关。Work 保持 DSH 原有创建流程；Chat 进入独立的对话首页（鱼形标记 + slogan + 居中输入框）；
+- **深度思考 / 联网搜索**：两个开关随消息透传到网页端接口，Chat 页与对话页都可切换；
+- **完整渲染**：Markdown（GFM）+ LaTeX（`$…$`、`$$…$$`、`\(…\)`、`\[…\]`），本地打包 marked 与 KaTeX，离线可用。
+
+分工上：Host 半侧负责凭据、网页端接口、SSE 流式发送、PoW 求解与本地持久化；Client 半侧只通过同源 `/workchat/*` 路由访问宿主，不直接出网。鉴权使用网页端 `userToken`（账号密码登录会被人机验证拦截）。
+
+> **状态**：已在 DSH `0.2.2-rc.1` / `desktop` profile 安装验证；设计文档见 [`docs/需求与实现方案.md`](docs/需求与实现方案.md)，分模块文档见 [`docs/00-overview.md`](docs/00-overview.md)，验收清单与已知问题见 [`docs/11-验收与已知问题.md`](docs/11-验收与已知问题.md)。
 
 ## 能力
 
 | 需求 | 说明 |
 |---|---|
 | 工作区整体折叠 | 侧栏工作区列表上方增加区头，悬停加深、点击收起/展开全部工作区，状态记忆 |
-| 对话区 | 与工作区平级的第二分区，同步 DeepSeek 网页端对话，条目可折叠、点击在主面板打开 |
-| Work / Chat 开关 | 新会话页顶部居中分段开关；Chat 态隐藏工作区 / Agent 预设（开发模式）/ 权限预设（审核模式） |
+| 对话区 | 与工作区平级的第二分区，同步网页端对话；按日期分组、刷新、重命名、置顶、分享、多选删除 |
+| Work / Chat 开关 | 新会话页顶部居中分段开关；Chat 进入独立首页，输入框内含深度思考 / 联网搜索 |
+| 对话渲染 | Markdown + LaTeX，本地 vendor，离线可用；思维链折叠展示 |
+| 发送与回退 | 网页端 SSE 流式回复；不可用时回退本地会话 |
 
 ## 目录
 
 ```
-index.js               Host 入口（webServer 就绪后挂 /workchat/*）
-client.js              浏览器 bundle（ModuleLoader 工厂，当前只注册设置页）
-src/host/auth.js       账号密码 → userToken（浏览器头、稳定 deviceId、脱敏）
-src/host/sync.js       网页端会话列表 / 历史 / SSE 补全
-src/host/store.js      $DSH_HOME/workchat/*.json 持久化（0600）
-src/host/http.js       路由助手 + 同源校验
-src/host/routes.js     /workchat/* 路由表
-tools/probe-login.mjs  开发期登录探测，只打印脱敏结果
-secrets/               本机凭据（已 gitignore，AI 不读取）
+index.js                 Host 入口（webServer 就绪后挂 /workchat/*）
+client.js                浏览器 bundle：侧栏注入、模式开关、对话面板、设置页、Markdown/LaTeX 渲染
+src/host/auth.js         网页端登录 / userToken / 脱敏
+src/host/sync.js         会话列表、历史、SSE 补全、PoW 头、会话操作
+src/host/pow.js          DeepSeekHashV1 wasm 求解（本地缓存）
+src/host/importer.js     网页端对话 → DSH 会话事件（可选能力）
+src/host/routes.js       /workchat/* 路由表
+src/host/store.js        $DSH_HOME/workchat/* 持久化
+assets/vendor/           本地 marked + KaTeX（含字体）
+tools/                   自检脚本：smoke-* / probe-*
+secrets/                 本机凭据（已 gitignore）
 ```
 
 ## 安装（确认方案后）
