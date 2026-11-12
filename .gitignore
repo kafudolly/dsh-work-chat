@@ -1,0 +1,6 @@
+node_modules/
+*.log
+
+# 本机凭据：绝不提交
+secrets/*.json
+!secrets/README.md

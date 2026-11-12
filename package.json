@@ -1,0 +1,38 @@
+{
+  "name": "dsh-work-chat",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "DSH 侧边栏「工作区 / 对话区」分区与折叠、新会话页 Work–Chat 开关，以及 DeepSeek 网页端对话同步",
+  "keywords": ["dsh", "dsh-plugin", "deepseek-harness", "workspace", "chat", "sidebar"],
+  "license": "MIT",
+  "main": "index.js",
+  "files": [
+    "index.js",
+    "client.js",
+    "src",
+    "assets",
+    "locale/*.json",
+    "icon.svg",
+    "cordis.patch.yml",
+    "README.md"
+  ],
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./assets/*": "./assets/*",
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": []
+    }
+  }
+}

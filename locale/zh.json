@@ -1,0 +1,18 @@
+{
+  "settings.title": "DeepSeek 网页账号",
+  "settings.description": "用于同步 DeepSeek 网页端（chat.deepseek.com）的对话。密码只保存在本机。",
+  "field.email": "邮箱",
+  "field.mobile": "手机号",
+  "field.areaCode": "区号",
+  "field.password": "密码",
+  "action.save": "保存",
+  "action.test": "测试连接",
+  "state.unconfigured": "未配置",
+  "state.configured": "账号已配置，尚未登录",
+  "state.signedIn": "已登录",
+  "sidebar.section.workspaces": "工作区",
+  "sidebar.section.conversations": "对话区",
+  "sidebar.empty.conversations": "暂无对话",
+  "newSession.mode.work": "Work",
+  "newSession.mode.chat": "Chat"
+}

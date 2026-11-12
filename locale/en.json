@@ -1,0 +1,18 @@
+{
+  "settings.title": "DeepSeek web account",
+  "settings.description": "Used to sync conversations from the DeepSeek web app (chat.deepseek.com). The password stays on this machine.",
+  "field.email": "Email",
+  "field.mobile": "Mobile",
+  "field.areaCode": "Area code",
+  "field.password": "Password",
+  "action.save": "Save",
+  "action.test": "Test connection",
+  "state.unconfigured": "Not configured",
+  "state.configured": "Configured, not signed in",
+  "state.signedIn": "Signed in",
+  "sidebar.section.workspaces": "Workspaces",
+  "sidebar.section.conversations": "Conversations",
+  "sidebar.empty.conversations": "No conversations yet",
+  "newSession.mode.work": "Work",
+  "newSession.mode.chat": "Chat"
+}
